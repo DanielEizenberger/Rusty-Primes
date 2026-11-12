@@ -1,6 +1,7 @@
 use std::sync::{Arc, Mutex};
 use std::time::Instant;
 use std::thread;
+use num_bigint::BigInt;
 
 fn main() {
     let limit: u64 = 1_000_000;
@@ -26,7 +27,7 @@ fn main() {
                     continue;
                 }
 
-                if is_prime(i) {
+                if is_prime(BigInt::from(i)) {
                     primes.lock().unwrap().push(i);
                 }
             }
@@ -48,13 +49,16 @@ fn main() {
     println!("Primes: {}", primes.lock().unwrap().len());
 }
 
-fn is_prime(n: u64) -> bool {
-    if n <= 1 { return false; }
-    else if n == 2 { return true; }
-    else if n % 2 == 0 { return false; }
+fn is_prime(n: BigInt) -> bool {
+    if n <= BigInt::ONE { return false; }
+    else if n == BigInt::from(2) { return true; }
+    else if &n % BigInt::from(2) == BigInt::ZERO { return false; }
 
-    for i in 3..=((n as f64).sqrt() as u64) {
-        if n % i == 0 { return false; }
+    let mut counter = BigInt::from(3);
+    let top = n.sqrt();
+    while counter <= top {
+        if &n % &counter == BigInt::ZERO { return false; }
+        counter += 1;
     }
 
     return true;
