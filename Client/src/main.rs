@@ -4,10 +4,20 @@ use std::thread;
 use num_bigint::BigInt;
 
 fn main() {
+    calculate_primes(1.0);
+}
+
+fn calculate_primes(cpu_usage: f32) {
+    if cpu_usage < 0.0 || cpu_usage > 1.0 {
+        print!("CPU usage can only be between 0.0 and 1.0");
+        return;
+    }
+
     let limit: u64 = 1_000_000;
     let thread_count = thread::available_parallelism()
         .map(|n| n.get())
         .unwrap_or(1) as u64;
+    let threads = ((thread_count as f32) * cpu_usage).max(1f32) as u64;
 
     println!("Available CPU threads: {}", thread_count);
 
@@ -16,8 +26,8 @@ fn main() {
     let mut handles = vec![];
 
     let start = Instant::now();
-    let chunk_size = limit / thread_count;
-    for chunk in 0..thread_count {
+    let chunk_size = limit / threads;
+    for chunk in 0..threads {
         let primes = Arc::clone(&primes);
         let handle = thread::spawn(move || {
             let start = chunk * chunk_size + 1;
