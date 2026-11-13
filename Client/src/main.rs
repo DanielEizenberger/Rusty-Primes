@@ -73,3 +73,46 @@ fn is_prime(n: BigInt) -> bool {
 
     return true;
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_is_prime_negatives() {
+        assert_eq!(is_prime(BigInt::from(-1)), false);
+        assert_eq!(is_prime(BigInt::from(-2)), false);
+        assert_eq!(is_prime(BigInt::from(-3)), false);
+        assert_eq!(is_prime(BigInt::from(-4)), false);
+        assert_eq!(is_prime(BigInt::from(-5)), false);
+        assert_eq!(is_prime(BigInt::from(-10)), false);
+        assert_eq!(is_prime(BigInt::from(-311)), false);
+        assert_eq!(is_prime(BigInt::from(-1229)), false);
+        assert_eq!(is_prime(BigInt::from(-7919)), false);
+    }
+
+    #[test]
+    fn test_is_prime_zero() {
+        assert_eq!(is_prime(BigInt::from(0)), false);
+    }
+
+    #[test]
+    fn test_is_prime_positives() {
+        assert_eq!(is_prime(BigInt::from(1)), false);
+        assert_eq!(is_prime(BigInt::from(4)), false);
+        assert_eq!(is_prime(BigInt::from(6)), false);
+        assert_eq!(is_prime(BigInt::from(9)), false);
+        assert_eq!(is_prime(BigInt::from(423)), false);
+        assert_eq!(is_prime(BigInt::from(2649)), false);
+        assert_eq!(is_prime(BigInt::from(7909)), false);
+
+        assert_eq!(is_prime(BigInt::from(2)), true);
+        assert_eq!(is_prime(BigInt::from(3)), true);
+        assert_eq!(is_prime(BigInt::from(5)), true);
+        assert_eq!(is_prime(BigInt::from(7)), true);
+        assert_eq!(is_prime(BigInt::from(577)), true);
+        assert_eq!(is_prime(BigInt::from(1877)), true);
+        assert_eq!(is_prime(BigInt::from(2477)), true);
+        assert_eq!(is_prime(BigInt::from(7919)), true);
+    }
+}
