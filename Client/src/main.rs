@@ -20,6 +20,7 @@ fn calculate_primes(cpu_usage: f32) {
     let threads = ((thread_count as f32) * cpu_usage).max(1f32) as u64;
 
     println!("Available CPU threads: {}", thread_count);
+    println!("Used CPU threads: {}", threads);
 
     let primes = Arc::new(Mutex::new(Vec::new()));
     primes.lock().unwrap().push(2);
